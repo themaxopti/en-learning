@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "baseUrl": ".",
     "noImplicitAny": true,
     "module": "ESNext",
     "target": "es5",
@@ -9,6 +10,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "composite": true
+    "composite": true,
+    "paths": {
+      "@services/*": [
+        "../../services/*"
+      ]
+    }
   }
 }

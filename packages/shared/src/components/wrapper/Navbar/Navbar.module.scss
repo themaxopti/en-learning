@@ -1,0 +1,156 @@
+.navbar__logos {
+}
+
+.navbar .logo {
+  cursor: pointer;
+}
+
+.navbar .logo-line {
+  display: none;
+}
+
+.navbar--close .logo {
+  display: none;
+}
+
+.navbar--close .logo-line {
+  display: block;
+}
+
+.navbar {
+  z-index: 1000;
+  box-sizing: content-box;
+  background-color: white;
+  position: fixed;
+  padding: 10px;
+  max-width: 200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  border-right: 0.5px solid #ced0db;
+}
+
+.header__fixed {
+  width: 100%;
+  height: 50px;
+  background-color: red;
+  margin-left: 50px;
+}
+
+.navbar--close {
+  max-width: 50px;
+  width: 100%;
+}
+
+.navbar__items {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.navbar .navbar__item {
+  display: flex;
+  align-items: center;
+  column-gap: 3px;
+  column-gap: 15px;
+  text-align: right;
+  padding-left: 9px;
+  // max-width: 180px;
+  height: 42px;
+  cursor: pointer;
+  border-radius: 9px;
+}
+
+.navbar--close .navbar__item-text {
+  display: none;
+}
+
+.navbar--close .navbar__item {
+  padding: 0;
+  justify-content: center;
+}
+
+.navbar__item--active {
+  background-color: #ebedf5;
+}
+
+.navbar__item:not(.navbar__item--active):hover {
+  transition: 0.1s;
+  background-color: #eeeff1;
+}
+
+.navbar__menu {
+  cursor: pointer;
+  border-top: 2px solid #ced0db;
+  height: 50px;
+  margin-top: auto;
+  transform: translateY(-20px);
+  display: flex;
+  div {
+    // margin-left: 20px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    img {
+      transform: scale(-1, 1);
+    }
+  }
+}
+
+.navbar__menu__item {
+  // display: flex;
+}
+
+@media (min-width: 1200px) {
+  .navbar {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 1200px) {
+  .navbar__logos {
+    display: none !important;
+  }
+
+  .navbar__menu {
+    display: none;
+  }
+
+  .navbar {
+    border-top: 0.5px solid #ced0db;
+    bottom: 0;
+    padding: 0;
+    width: 100vw !important;
+    justify-content: center;
+    background-color: white;
+    max-width: none;
+    height: 60px;
+    .logo {
+      display: none;
+    }
+    .logo-line {
+      display: none;
+    }
+    .navbar__items {
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: row;
+      .navbar__item--active {
+        background-color: #ebedf5;
+      }
+    }
+  }
+
+  .navbar__item-text {
+    display: none;
+  }
+
+  .navbar__item {
+    box-sizing: content-box;
+    height: 32px;
+    width: 32px;
+    padding: 0px;
+  }
+}
