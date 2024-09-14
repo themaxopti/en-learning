@@ -10,14 +10,14 @@ interface Props {
 
 export const DictionaryCards: React.FC<Props> = ({ }) => {
 
-    const [cards, setCards] = useState([1, 2, 3, 4, 5, 6])
+    const [cards, setCards] = useState(["Some", "Title", "omit"])
 
     return (
         <>
             <Box sx={{ width: '100%', display: 'flex', columnGap: '50px', rowGap: '20px', flexWrap: 'wrap' }}>
                 {
-                    cards.map((el) => {
-                        return <DictionaryCard />
+                    cards.map((el,i) => {
+                        return <DictionaryCard key={i} title={el} />
                     })
                 }
 

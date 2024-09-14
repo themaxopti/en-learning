@@ -1,5 +1,7 @@
 import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit'
 import { words } from '..'
+import { v4 as uuidv4 } from 'uuid';
+
 
 export interface Word {
   word: string
@@ -17,9 +19,10 @@ interface DictionaryState {
 
 const initialState: DictionaryState = {
   words: [
-    { index: 0, word: 'hellored1', translate: 'Привет', checked: false },
-    { index: 1, word: 'helloredux2', translate: 'Привет3', checked: false },
-    { index: 2, word: 'helloredux3', translate: 'Привет3', checked: false },
+    { index: 0, word: `hellored1 ${uuidv4()}`, translate: 'Привет', checked: false },
+    { index: 1, word: `helloredux2 ${uuidv4()}`, translate: 'Привет3', checked: false },
+    { index: 2, word: `helloredux3 ${uuidv4()}`, translate: 'Привет3', checked: false },
+    { index: 3, word: `helloredux3 ${uuidv4()}`, translate: 'Привет4', checked: false },
   ],
   selectMode: false,
   selectAllMode: false,
@@ -78,10 +81,10 @@ const dictionarySlice = createSlice({
       const newArr = action.payload.map<Word>((el, i) => {
         lastIndex = lastIndex + 1
         return {
-          checked: false,
+          checked: false, 
           index: lastIndex,
           translate: el.translate,
-          word: el.word,
+          word: `${el.word} ${uuidv4()}`,
         }
       })
       state.words.push(...newArr)

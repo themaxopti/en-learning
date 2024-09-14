@@ -77,7 +77,7 @@ export function convertStrToArray(
       if (rusWords[i] === undefined) {
         isError = true
       }
-    //   debugger
+      //   debugger
       wordTranslate.push({ word: el, translate: rusWords[i] })
     })
   }
@@ -87,4 +87,17 @@ export function convertStrToArray(
   }
 
   return wordTranslate
+}
+
+
+export function handleUuidWord(word: string) {
+  const wordParts = word.split(' ')
+  const newWordParts = []
+  for (let i = 0; i < wordParts.length; i++) {
+    const element = wordParts[i];
+    if (i !== wordParts.length - 1){
+      newWordParts.push(element)
+    }
+  }
+  return newWordParts.join(' ')
 }

@@ -1,6 +1,7 @@
 import { componentsPropertiesSlice } from "@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer"
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit"
 import { dictionaryReducer } from "../modules/dictionaryModule"
+import { errorReducer } from "@packages/shared/src/modules/errorModule"
 
 interface CounterState {
   value: number
@@ -33,7 +34,9 @@ export const store = configureStore({
     counter: counterSlice.reducer,
     componentsProperties: componentsPropertiesSlice.reducer,
     dictionary: dictionaryReducer,
+    error: errorReducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck:false}),
 })
 
 export type RootState = ReturnType<typeof store.getState>

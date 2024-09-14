@@ -1,23 +1,26 @@
 import { Box, Button, Modal, TextareaAutosize, TextField } from '@mui/material'
 import { useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import s from '../../styles/DictionaryPage.module.scss'
 import { useDispatch } from 'react-redux'
 import { addManyWords, addWord } from '../../state/dictionary.reducer'
 import { useSelector } from 'react-redux'
 import { wordsSelector } from '../../state/selectors'
 import { convertStrToArray } from '../../utils/helpers'
+import { v4 as uuidv4 } from 'uuid'
+// import { setTestRef } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 
 interface Props {}
 
 type WordTranslate = { word: string; translate: string }
 
 export const AddWordForm: React.FC<Props> = ({}) => {
+  const dispatch = useDispatch()
+
   const [open, setOpen] = useState(false)
   const [manyWordsValue, setManyWordsValue] = useState('')
   const [errorMsg, seterrorMsg] = useState('')
 
-  const dispatch = useDispatch()
   const words = useSelector(wordsSelector)
 
   const formik = useFormik({
@@ -31,7 +34,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
           checked: false,
           index: words.length,
           translate: values.translate,
-          word: values.word,
+          word: `${values.word} ${uuidv4()}`,
         })
       )
       values.word = ''
@@ -66,7 +69,6 @@ export const AddWordForm: React.FC<Props> = ({}) => {
       return
     }
 
-    console.log(wordsAndTranslates)
     dispatch(addManyWords(wordsAndTranslates))
 
     setTimeout(() => {
@@ -77,7 +79,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
   return (
     <>
       <Box>
-        <form onSubmit={formik.handleSubmit}>
+        <form  onSubmit={formik.handleSubmit}>
           <Box className={s['add-word-form']}>
             <Button
               onClick={() => setOpen(true)}
@@ -147,7 +149,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
             </p>
           </Box>
           {errorMsg && <Box sx={{ color: 'red' }}>{errorMsg}</Box>}
-         
+
           <TextareaAutosize
             value={manyWordsValue}
             onChange={e => setManyWordsValue(e.target.value)}

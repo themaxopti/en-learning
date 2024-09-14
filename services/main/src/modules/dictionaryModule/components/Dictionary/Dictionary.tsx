@@ -16,6 +16,7 @@ import {
     Word as WordType,
 } from '../../state/dictionary.reducer'
 import { useDispatch } from 'react-redux'
+import { handleUuidWord } from '../../utils/helpers'
 
 interface Props {
     item: WordType
@@ -33,7 +34,7 @@ export const Word = ({ item, i }: Props) => {
     const [isControlItem, setIsControlItem] = useState(false)
     const [isControlItemTranslate, setIsControlItemTranslate] = useState(false)
 
-    const [newWord, setNewWord] = useState(item.word)
+    const [newWord, setNewWord] = useState(handleUuidWord(item.word))
     const [newTranslate, setNewTranslate] = useState(item.translate)
 
     // useEffect(() => {
@@ -149,19 +150,10 @@ export const Word = ({ item, i }: Props) => {
 }
 
 export function Words() {
-    // const [items, setItems] = useState([{ word: 'hi', translate: 'привет' }, { word: 'hi2', translate: 'привет2' }]);
     const words = useSelector(wordsSelector)
-    // const [items, setItems] = useState(
-    //     [
-    //         { index: 0, word: "helloredux", translate: "Привет", checked: false },
-    //         { index: 1, word: "helloredux2", translate: "Привет3", checked: false },
-    //         { index: 2, word: "helloredux3", translate: "Привет3", checked: false },
-    //     ]
-    // );
     const [items, setItems] = useState(words)
 
     useEffect(() => {
-        console.log(items)
     }, [items])
     const dispatch = useDispatch()
 
@@ -186,6 +178,8 @@ export const Dictionary: React.FC<{}> = ({ }) => {
             <Box className={s['words']}>
                 <Words />
             </Box>
+      <div style={{height:'1000px',width:'100px'}}></div>
+
         </>
     )
 }
