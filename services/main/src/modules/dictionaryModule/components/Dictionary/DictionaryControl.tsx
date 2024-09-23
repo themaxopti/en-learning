@@ -2,12 +2,19 @@ import { Box } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
+  DELETE_WORDS,
+  DeleteWordsSagaParam,
   removeSelectedItems,
   setSelectAllMode,
   setSelectMode,
 } from '../../state/dictionary.reducer'
 import { useSelector } from 'react-redux'
-import { isSelectedAllMode, selectMode } from '../../state/selectors'
+import {
+  currentDictionarySelector,
+  isSelectedAllMode,
+  selectMode,
+  wordsSelector,
+} from '../../state/selectors'
 // import { setDictionaryControllRef } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 import { useRefs } from '@packages/shared/src/components/wrapper/Wrapper/WrapperContainer'
 import { isDictionaryControllFixedSelector } from '@packages/shared/src/state/reducers/componentsProperties/selectors'
@@ -18,6 +25,8 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
   const dispatch = useDispatch()
   const selectedMode = useSelector(selectMode)
   const selectedAllMode = useSelector(isSelectedAllMode)
+  const words = useSelector(wordsSelector)
+  const currentDictionary = useSelector(currentDictionarySelector)
 
   const ref = useRef(null)
   const { element2Ref, element1Ref } = useRefs()
@@ -35,6 +44,25 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
   //       dispatch(setDictionaryControllRef(ref.current))
   //     }
   //   }, [ref.current])
+
+  async function deleteManyWordsHandler() {
+    const selectedWords = words
+      .filter(word => {
+        return word.checked === true
+      })
+      .map(el => {
+        return {
+          id: el.id,
+        }
+      })
+
+    // console.log(selectedWords)
+
+    dispatch({
+      type: DELETE_WORDS,
+      payload: { dictionaryId: currentDictionary.id, wordsId: selectedWords },
+    })
+  }
 
   const handleScroll = () => {
     if (element1Ref.current && element2Ref.current) {
@@ -94,7 +122,7 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
               All
             </Box>
           )}
-          <Box onClick={() => dispatch(removeSelectedItems())}>Delete</Box>
+          <Box onClick={deleteManyWordsHandler}>Delete</Box>
         </Box>
       </div>
     </>

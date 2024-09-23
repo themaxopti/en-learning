@@ -3,16 +3,23 @@ import { useFormik } from 'formik'
 import React, { useEffect, useRef, useState } from 'react'
 import s from '../../styles/DictionaryPage.module.scss'
 import { useDispatch } from 'react-redux'
-import { addManyWords, addWord } from '../../state/dictionary.reducer'
+import {
+  addManyWords,
+  addWord,
+  CREATE_WORD,
+  CREATE_WORDS,
+  CreateWordSagaParam,
+  CreateWordsSagaParam,
+} from '../../state/dictionary.reducer'
 import { useSelector } from 'react-redux'
-import { wordsSelector } from '../../state/selectors'
+import { currentDictionarySelector, wordsSelector } from '../../state/selectors'
 import { convertStrToArray } from '../../utils/helpers'
 import { v4 as uuidv4 } from 'uuid'
 // import { setTestRef } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 
 interface Props {}
 
-type WordTranslate = { word: string; translate: string }
+type WordTranslate = { title: string; translate: string }
 
 export const AddWordForm: React.FC<Props> = ({}) => {
   const dispatch = useDispatch()
@@ -20,8 +27,20 @@ export const AddWordForm: React.FC<Props> = ({}) => {
   const [open, setOpen] = useState(false)
   const [manyWordsValue, setManyWordsValue] = useState('')
   const [errorMsg, seterrorMsg] = useState('')
-
   const words = useSelector(wordsSelector)
+
+  const currentDictionary = useSelector(currentDictionarySelector)
+
+  async function addWordHandler(title: string, translate: string) {
+    dispatch({
+      type: CREATE_WORD,
+      payload: {
+        dictionaryId: currentDictionary.id,
+        title,
+        translate,
+      },
+    })
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -29,14 +48,15 @@ export const AddWordForm: React.FC<Props> = ({}) => {
       translate: '',
     },
     onSubmit: values => {
-      dispatch(
-        addWord({
-          checked: false,
-          index: words.length,
-          translate: values.translate,
-          word: `${values.word} ${uuidv4()}`,
-        })
-      )
+      // dispatch(
+      //   addWord({
+      //     checked: false,
+      //     index: words.length,
+      //     translate: values.translate,
+      //     title: `${values.word} ${uuidv4()}`,
+      //   })
+      // )
+      addWordHandler(values.word, values.translate)
       values.word = ''
       values.translate = ''
     },
@@ -53,7 +73,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
     },
   })
 
-  function handleAddManyWords() {
+  function addManyWordsHandler() {
     const wordsAndTranslates: WordTranslate[] | boolean = convertStrToArray(
       manyWordsValue.trim()
     )
@@ -69,7 +89,14 @@ export const AddWordForm: React.FC<Props> = ({}) => {
       return
     }
 
-    dispatch(addManyWords(wordsAndTranslates))
+    dispatch({
+      type: CREATE_WORDS,
+      payload: {
+        dictionaryId: currentDictionary.id,
+        words: wordsAndTranslates,
+      },
+    })
+    // dispatch(addManyWords(wordsAndTranslates))
 
     setTimeout(() => {
       setOpen(false)
@@ -79,7 +106,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
   return (
     <>
       <Box>
-        <form  onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
           <Box className={s['add-word-form']}>
             <Button
               onClick={() => setOpen(true)}
@@ -154,7 +181,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
             value={manyWordsValue}
             onChange={e => setManyWordsValue(e.target.value)}
           />
-          <Button onClick={handleAddManyWords} variant="contained">
+          <Button onClick={addManyWordsHandler} variant="contained">
             Add
           </Button>
         </Box>

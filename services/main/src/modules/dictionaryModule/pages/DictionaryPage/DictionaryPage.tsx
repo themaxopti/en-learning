@@ -1,27 +1,40 @@
-import { Box } from "@mui/material";
-import React from "react"
-import { AddWordForm } from "../../components/Form/AddWordForm";
-import { WrapperContainer } from "@packages/shared/src/components/wrapper/Wrapper/WrapperContainer";
+import { Box, Skeleton } from '@mui/material'
+import React from 'react'
+import { AddWordForm } from '../../components/Form/AddWordForm'
+import { WrapperContainer } from '@packages/shared/src/components/wrapper/Wrapper/WrapperContainer'
 import s from '../../styles/DictionaryPage.module.scss'
-import { Dictionary } from "../../components/Dictionary/Dictionary";
+import { Dictionary } from '../../components/Dictionary/Dictionary'
+import { useDictionaryPage } from '../../hooks/useDictionaryPage'
 
-interface Props {
+interface Props {}
 
-}
+export const DictionaryPage: React.FC<Props> = ({}) => {
+  const { isDictionaryExist, isWordsLoading, newWordsAmount, newWordsPending } =
+    useDictionaryPage()
 
-export const DictionaryPage: React.FC<Props> = ({ }) => {
+  if (!isDictionaryExist && !isWordsLoading) {
     return (
-        <>
-            <WrapperContainer fullHeight>
-                <Box className={s.dictionary}>
-                    <Box className={s.dictionary__form}>
-                        <h2>Dictionary title</h2>
-                        <AddWordForm />
-                    </Box>
-                    <Dictionary />
-                </Box>
-            </WrapperContainer>
-        </>
+      <WrapperContainer fullHeight>
+        <h2>This dictionary does not exist</h2>
+      </WrapperContainer>
     )
-};
+  }
 
+  return (
+    <>
+      <WrapperContainer fullHeight>
+        <Box className={s.dictionary}>
+          <Box className={s.dictionary__form}>
+            {isWordsLoading ? (
+              <Skeleton variant="text" width={210} height={30} />
+            ) : (
+              <h2>Dictionary title</h2>
+            )}
+            <AddWordForm />
+          </Box>
+          <Dictionary newWordsAmount={newWordsAmount} newWordsPending={newWordsPending} isWordsLoading={isWordsLoading} />
+        </Box>
+      </WrapperContainer>
+    </>
+  )
+}

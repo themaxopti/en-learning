@@ -2,6 +2,12 @@ import { componentsPropertiesSlice } from "@packages/shared/src/state/reducers/c
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit"
 import { dictionaryReducer } from "../modules/dictionaryModule"
 import { errorReducer } from "@packages/shared/src/modules/errorModule"
+import { authReducer } from "@/modules/authModule"
+import createSagaMiddleware from "@redux-saga/core";
+import { all } from "redux-saga/effects"
+import { watchAuthSaga, watchLogoutSaga } from "@/modules/authModule/state/auth.reducer"
+import { userReducer } from "@/modules/userModule"
+import { watchCreateWordSaga, watchCreateWordsSaga, watchDeleteWordSaga, watchDeleteWordsSaga, watchGetDictionariesSaga, watchGetWordsSaga } from "@/modules/dictionaryModule/state/dictionary.reducer"
 
 interface CounterState {
   value: number
@@ -11,33 +17,33 @@ const initialState: CounterState = {
   value: 0,
 }
 
-export const counterSlice = createSlice({
-  name: "counter",
-  initialState,
-  reducers: {
-    increment: (state) => {
-      state.value += 1
-    },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
-    },
-  },
-})
+export function* rootSaga() {
+  yield all([
+    watchAuthSaga(),
+    watchLogoutSaga(),
+    watchGetDictionariesSaga(),
+    watchGetWordsSaga(),
+    watchCreateWordSaga(),
+    watchCreateWordsSaga(),
+    watchDeleteWordSaga(),
+    watchDeleteWordsSaga()
+  ]);
+}
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
     componentsProperties: componentsPropertiesSlice.reducer,
     dictionary: dictionaryReducer,
-    error: errorReducer
+    error: errorReducer,
+    auth: authReducer,
+    user: userReducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck:false}),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false, thunk: false }).concat(sagaMiddleware),
 })
+
+sagaMiddleware.run(rootSaga)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

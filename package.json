@@ -8,5 +8,8 @@
   ],
   "devDependencies": {
     "prettier": "^3.3.3"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^6.1.0"
   }
 }

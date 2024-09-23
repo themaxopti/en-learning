@@ -26,27 +26,6 @@ export const Header = React.memo(() => {
     console.log('lap')
   }, [isOverlapping])
 
-  // useEffect(() => {
-  //   if (rootRef.current) {
-  //     dispatch(setHeaderRef(rootRef.current))
-  //   }
-  // }, [rootRef.current])
-
-  // useEffect(() => {
-  //   if (targetRef && rootRef.current) {
-  //     // console.log('here')
-
-  //     window.addEventListener('scroll', handleScroll)
-  //     handleScroll() // Вызовем сразу для первичной проверки
-  //   }
-  // }, [targetRef, rootRef.current])
-
-  // useEffect(() => {
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [])
-
   return (
     <>
       <Box

@@ -10,7 +10,7 @@ function testInput(str: string) {
 
 export function convertStrToArray(
   str: string
-): { word: string; translate: string }[] | false {
+): { title: string; translate: string }[] | false {
   function checkIsRowSpace(gap: string) {
     const gapStr = gap.split('\n').filter(item => item)
     if (gapStr.length > 1) {
@@ -23,7 +23,7 @@ export function convertStrToArray(
 
   const rusWords: string[] = []
   const enWords: string[] = []
-  const wordTranslate: [{ word: string; translate: string }] = [] as any
+  const wordTranslate: [{ title: string; translate: string }] = [] as any
   let isError = false
 
   if (isRowSpace) {
@@ -37,7 +37,7 @@ export function convertStrToArray(
     })
 
     enWords.forEach((el, i) => {
-      wordTranslate.push({ word: el, translate: rusWords[i] })
+      wordTranslate.push({ title: el, translate: rusWords[i] })
     })
   } else {
     const splittedStr = str.split(' ').filter(elem => elem)
@@ -78,7 +78,7 @@ export function convertStrToArray(
         isError = true
       }
       //   debugger
-      wordTranslate.push({ word: el, translate: rusWords[i] })
+      wordTranslate.push({ title: el, translate: rusWords[i] })
     })
   }
 
