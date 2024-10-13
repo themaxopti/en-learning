@@ -1,4 +1,6 @@
+import { createSelector } from '@reduxjs/toolkit'
 import { RootState } from '../../../store/store'
+import { v4 as uuidv4 } from 'uuid';
 
 export const selectMode = (state: RootState) => state.dictionary.selectMode
 export const wordsSelector = (state: RootState) => state.dictionary.words
@@ -14,3 +16,8 @@ export const isDictionaryExistSelector = (state: RootState) => state.dictionary.
 export const newWordsPendingSelector = (state: RootState) => state.dictionary.newWords.pending
 export const newWordsAmountSelector = (state: RootState) => state.dictionary.newWords.amount
 
+export const uuidWordsSelector = createSelector(wordsSelector,(state) => {
+  return state.map((word) => {
+    return {...word,title:`${word.title} ${uuidv4()}`}
+  })
+})

@@ -50,6 +50,13 @@ export interface DeleteWordsReq {
     dictionaryId: number
 }
 
+export class ChangeWordsIndexReq {
+    wordsIndexes: {
+        indexWillBe: number
+        id: number
+    }[]
+} 
+
 // 
 
 export type CreateDictionaryRes = ServerResponse<
@@ -115,3 +122,4 @@ export type GetWordsRes = ServerResponse<
 export type DeleteWordRes = ServerResponse<{}>
 
 export type DeleteWordsRes = ServerResponse<{}>
+

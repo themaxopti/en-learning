@@ -2,8 +2,8 @@ import { Box } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
-  DELETE_WORDS,
-  DeleteWordsSagaParam,
+  // DELETE_WORDS,
+  // DeleteWordsSagaParam,
   removeSelectedItems,
   setSelectAllMode,
   setSelectMode,
@@ -18,6 +18,7 @@ import {
 // import { setDictionaryControllRef } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 import { useRefs } from '@packages/shared/src/components/wrapper/Wrapper/WrapperContainer'
 import { isDictionaryControllFixedSelector } from '@packages/shared/src/state/reducers/componentsProperties/selectors'
+import { DELETE_WORDS } from '../../state/sagas'
 
 interface Props {}
 
@@ -117,7 +118,7 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
           {selectedMode && (
             <Box
               sx={{ textDecoration: selectedAllMode ? 'underline' : 'none' }}
-              onClick={() => dispatch(setSelectAllMode())}
+              onClick={() => dispatch(setSelectAllMode({}))}
             >
               All
             </Box>

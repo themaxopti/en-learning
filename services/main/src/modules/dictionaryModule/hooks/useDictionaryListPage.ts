@@ -5,9 +5,10 @@ import { useSelector } from "react-redux";
 import { dictionaryApi } from "../api/dictionary-api";
 import { userSelector } from "@/modules/userModule/state/selectors";
 import { useDispatch } from "react-redux";
-import { GET_DICTIONARIES } from "../state/dictionary.reducer";
+// import { GET_DICTIONARIES } from "../state/dictionary.reducer";
 import { dictionariesCardsSelector, isDictionariesLoadingSelector } from "../state/selectors";
 import { delay } from '@packages/shared/src/utils/delay'
+import { GET_DICTIONARIES } from "../state/sagas";
 
 export function useDictionaryListPage() {
     const dispatch = useDispatch()

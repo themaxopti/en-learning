@@ -1,3 +1,6 @@
+import { WordType } from "../state/dictionary.reducer";
+import { v4 as uuidv4 } from 'uuid';
+
 function testInput(str: string) {
   if (str.search(/[А-яЁё]/) != -1) {
     // console.log(true)
@@ -95,9 +98,51 @@ export function handleUuidWord(word: string) {
   const newWordParts = []
   for (let i = 0; i < wordParts.length; i++) {
     const element = wordParts[i];
-    if (i !== wordParts.length - 1){
+    if (i !== wordParts.length - 1) {
       newWordParts.push(element)
     }
   }
   return newWordParts.join(' ')
+}
+
+export function changedIndexesHelper(arr: WordType[]) {
+  const changedIndexes: any[] = []
+
+  const arrayWithChangedIndexes = [...arr].map((el, i) => {
+    // console.log(el);
+    
+    if (i === 0) {
+      if (el.index !== 1) {
+        changedIndexes.push({ title: el.title, id: el.id, indexWillBe: 1 })
+      }
+      el.index = 1
+      return el
+    }
+    const previousWord = arr[i - 1]
+
+    if (el.index - previousWord.index !== 1) {
+      console.log(el.index,previousWord.index);
+      
+      changedIndexes.push({ title: el.title, id: el.id, indexWillBe: previousWord.index + 1 })
+      // console.log(changedIndexes, 'changedIndexes');
+    }
+
+    el.index = previousWord.index + 1
+
+    return el
+  })
+
+  return { arrayWithChangedIndexes, changedIndexes }
+}
+
+export function sortWordsByIndex (words: WordType[]){
+  return words.sort((a,b) => {
+    return a.index - b.index
+  })
+}
+
+export function makeUuidWords (words: WordType[]){
+  return words.map((word) => {
+    return {...word,title:`${word.title} ${uuidv4()}`}
+  })
 }

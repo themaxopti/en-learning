@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { CreateDictionaryReq, CreateDictionaryRes, CreateWordReq, CreateWordRes, CreateWordsReq, GetDictionaryRes, GetWordsReq, GetWordsRes } from "./dictionary-api.dto";
+import { ChangeWordsIndexReq, CreateDictionaryReq, CreateDictionaryRes, CreateWordReq, CreateWordRes, CreateWordsReq, GetDictionaryRes, GetWordsReq, GetWordsRes } from "./dictionary-api.dto";
 import { CreateWordsRes, DeleteWordReq, DeleteWordRes, DeleteWordsReq, DeleteWordsRes, GetDictionariesReq, GetDictionariesRes, GetDictionaryReq } from "./dictionary-api.dto";
 
 class DictionaryApi {
@@ -41,6 +41,7 @@ class DictionaryApi {
         try {
             const { dictionaryId, limit, page } = data
             const res = await this.axiosApi.get(`/words/${dictionaryId}/1000/1`)
+            console.log(res);
             return res.data
         } catch (e) {
             console.log(e);
@@ -77,6 +78,17 @@ class DictionaryApi {
     async deleteWord(data: DeleteWordReq): Promise<DeleteWordRes> {
         try {
             const res = await this.axiosApi.delete('/word', { data })
+            return res.data
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async changeWordsIndexes(data: ChangeWordsIndexReq): Promise<{ statusCode: number }> {
+        try {
+            console.log(data);
+            
+            const res = await this.axiosApi.post('/words/changeIndex', data )
             return res.data
         } catch (e) {
             console.log(e);

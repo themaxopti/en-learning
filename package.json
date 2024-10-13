@@ -1,15 +1,23 @@
 {
   "name": "front",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+     "test:main": "jest --selectProjects=main"
+  },
   "workspaces": [
     "packages/*",
     "services/*"
   ],
   "devDependencies": {
-    "prettier": "^3.3.3"
+    "@types/jest": "^29.5.13",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@mui/icons-material": "^6.1.0"
+    "@mui/icons-material": "^6.1.0",
+    "@testing-library/jest-dom": "^6.5.0"
   }
 }

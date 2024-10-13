@@ -7,7 +7,8 @@ import createSagaMiddleware from "@redux-saga/core";
 import { all } from "redux-saga/effects"
 import { watchAuthSaga, watchLogoutSaga } from "@/modules/authModule/state/auth.reducer"
 import { userReducer } from "@/modules/userModule"
-import { watchCreateWordSaga, watchCreateWordsSaga, watchDeleteWordSaga, watchDeleteWordsSaga, watchGetDictionariesSaga, watchGetWordsSaga } from "@/modules/dictionaryModule/state/dictionary.reducer"
+import { dictionarySagasWathcers, dictionarySagasWathcersRun, watchGetDictionariesSaga } from "@/modules/dictionaryModule/state/sagas"
+// import { watchChangeWordsIndexesSaga, watchCreateWordSaga, watchCreateWordsSaga, watchDeleteWordSaga, watchDeleteWordsSaga, watchGetDictionariesSaga, watchGetWordsSaga } from "@/modules/dictionaryModule/state/dictionary.reducer"
 
 interface CounterState {
   value: number
@@ -21,27 +22,37 @@ export function* rootSaga() {
   yield all([
     watchAuthSaga(),
     watchLogoutSaga(),
-    watchGetDictionariesSaga(),
-    watchGetWordsSaga(),
-    watchCreateWordSaga(),
-    watchCreateWordsSaga(),
-    watchDeleteWordSaga(),
-    watchDeleteWordsSaga()
+
+    ...dictionarySagasWathcersRun()
+
+    // watchGetDictionariesSaga(),
+    // watchGetWordsSaga(),
+    // watchCreateWordSaga(),
+    // watchCreateWordsSaga(),
+    // watchDeleteWordSaga(),
+    // watchDeleteWordsSaga(),
+    // watchChangeWordsIndexesSaga()
   ]);
 }
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = configureStore({
-  reducer: {
-    componentsProperties: componentsPropertiesSlice.reducer,
-    dictionary: dictionaryReducer,
-    error: errorReducer,
-    auth: authReducer,
-    user: userReducer
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false, thunk: false }).concat(sagaMiddleware),
-})
+export const rootReducer = {
+  componentsProperties: componentsPropertiesSlice.reducer,
+  dictionary: dictionaryReducer,
+  error: errorReducer,
+  auth: authReducer,
+  user: userReducer
+}
+
+export function getStore(){
+  return configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false, thunk: false }).concat(sagaMiddleware),
+  })
+}
+
+export const store = getStore()
 
 sagaMiddleware.run(rootSaga)
 

@@ -14,7 +14,7 @@ const errorSlice = createSlice({
     reducers: {
         setAlertError: (state, action: PayloadAction<string>) => {
             state.alertError = action.payload
-            state.alertError = null
+            // state.alertError = null
         },
     },
 })

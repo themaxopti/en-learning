@@ -9,13 +9,16 @@ import { useSelector } from 'react-redux'
 import {
   currentDictionarySelector,
   selectMode,
+  uuidWordsSelector,
   wordsSelector,
 } from '../../state/selectors'
 import { v4 as uuidv4 } from 'uuid'
 import {
+  // CHANGE_WORDS_INDEX,
   changeIndex,
-  DELETE_WORD,
-  DeleteWordSagaParam,
+  // changeWordsIndexesSaga,
+  // DELETE_WORD,
+  // DeleteWordSagaParam,
   removeWord,
   reorder,
   selectItem,
@@ -23,6 +26,7 @@ import {
 } from '../../state/dictionary.reducer'
 import { useDispatch } from 'react-redux'
 import { handleUuidWord } from '../../utils/helpers'
+import { CHANGE_WORDS_INDEX, DELETE_WORD } from '../../state/sagas'
 
 interface Props {
   item: WordType
@@ -73,7 +77,7 @@ export const Word = ({ item, i }: Props) => {
       payload: {
         dictionaryId: currentDictionary.id,
         i,
-        id:item.id,
+        id: item.id,
       },
     })
   }
@@ -83,10 +87,11 @@ export const Word = ({ item, i }: Props) => {
       value={item}
       style={{ y, listStyle: 'none', padding: '0px' }}
       dragControls={dragControls}
-      onDragEnd={(event, info) => dispatch(changeIndex(item))}
+      // onDragEnd={(event, info) => dispatch(changeIndex(item))}
+      onDragEnd={(event, info) => dispatch({ type: CHANGE_WORDS_INDEX })}
       draggable={isDraggable}
     >
-      <div className={s['word']}>
+      <div data-testid="word" className={s['word']}>
         <Box
           className={s['word__title']}
           sx={{ display: 'flex', alignItems: 'center' }}
@@ -118,10 +123,7 @@ export const Word = ({ item, i }: Props) => {
                 value={newWord}
                 onChange={e => handleChange(e, 'word')}
               />
-              <Box
-                onClick={deleteWordHandler}
-                className={s['word__delete']}
-              >
+              <Box onClick={deleteWordHandler} className={s['word__delete']}>
                 Delete
               </Box>
             </Box>

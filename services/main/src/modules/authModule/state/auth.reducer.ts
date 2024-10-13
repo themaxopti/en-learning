@@ -40,20 +40,20 @@ export function* authSaga(): any {
   try {
     yield put(setAuthLoading(true));
     const response: AuthResponse = yield authApi.auth()
-    console.log(response);
+
     if (response.statusCode === 400 || response.statusCode === 404) {
       yield put(setIsAuth(false));
       yield put(setAuthLoading(false));
       return
     }
 
-    console.log(response);
-
     yield put(setProfile(response.data))
     yield put(setIsAuth(true))
     yield put(setAuthLoading(false));
   } catch (error) {
-    // yield put(getUserErrorAction(error));
+    console.log('error here');
+    yield put(setIsAuth(false))
+    yield put(setAuthLoading(false));
   }
 }
 

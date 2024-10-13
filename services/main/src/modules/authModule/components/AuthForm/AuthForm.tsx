@@ -104,7 +104,7 @@ export const AuthForm: React.FC<Props> = ({
         <Button type="submit" sx={{ marginTop: '10px' }} variant="contained">
           {type}
         </Button>
-        {serverError && <span className={s.error}>{serverError}</span>}
+        {serverError && <span data-testid="errorMessage" className={s.error}>{serverError}</span>}
       </form>
     </>
   )

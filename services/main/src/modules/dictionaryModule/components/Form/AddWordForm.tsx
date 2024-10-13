@@ -6,15 +6,16 @@ import { useDispatch } from 'react-redux'
 import {
   addManyWords,
   addWord,
-  CREATE_WORD,
-  CREATE_WORDS,
-  CreateWordSagaParam,
-  CreateWordsSagaParam,
+  // CREATE_WORD,
+  // CREATE_WORDS,
+  // CreateWordSagaParam,
+  // CreateWordsSagaParam,
 } from '../../state/dictionary.reducer'
 import { useSelector } from 'react-redux'
 import { currentDictionarySelector, wordsSelector } from '../../state/selectors'
 import { convertStrToArray } from '../../utils/helpers'
 import { v4 as uuidv4 } from 'uuid'
+import { CREATE_WORD, CREATE_WORDS } from '../../state/sagas'
 // import { setTestRef } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 
 interface Props {}
@@ -48,14 +49,6 @@ export const AddWordForm: React.FC<Props> = ({}) => {
       translate: '',
     },
     onSubmit: values => {
-      // dispatch(
-      //   addWord({
-      //     checked: false,
-      //     index: words.length,
-      //     translate: values.translate,
-      //     title: `${values.word} ${uuidv4()}`,
-      //   })
-      // )
       addWordHandler(values.word, values.translate)
       values.word = ''
       values.translate = ''
@@ -125,6 +118,9 @@ export const AddWordForm: React.FC<Props> = ({}) => {
                 fullWidth={true}
                 label="Word"
                 variant="outlined"
+                inputProps={{
+                  'data-testid': 'wordInput'
+                }}
               />
               <TextField
                 size="small"
@@ -133,14 +129,21 @@ export const AddWordForm: React.FC<Props> = ({}) => {
                 value={formik.values.translate}
                 name="translate"
                 fullWidth={true}
-                label="Word"
+                label="Translate"
                 variant="outlined"
+                inputProps={{
+                  'data-testid': 'translateInput'
+                }}
               />
               <Button
                 className={s['add-word-form__btn']}
                 type="submit"
                 variant="contained"
                 size="small"
+                data-testid="addWordButton"
+                // inputProps={{
+                //   'data-testid': 'addWordButton'
+                // }
               >
                 Add
               </Button>
