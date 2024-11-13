@@ -54,7 +54,8 @@ export const Wrapper: React.FC<Props> = ({ children, fullHeight = false }) => {
             sx={{
               boxSizing: 'border-box',
               width: '100%',
-              height: fullHeight ? '100%' : 'auto',
+              height: fullHeight ? 'calc(100% - 60px)' : 'auto',
+              // height:'100%',
               [breakpoints.down(1200)]: {
                 paddingBottom: '65px',
                 padding: '10px 10px 65px 10px',

@@ -26,6 +26,9 @@ export const dictionaryActions: DictionaryActionsType = {
     setWords: (state, action: PayloadAction<WordType[]>) => {
         state.words = action.payload
     },
+    createDictionary: (state, action: PayloadAction<DictionaryType>) => {
+        state.dictionaries.push(action.payload)
+    },
     changeIndex: (state, action: PayloadAction<WordType>): any => {
         const { arrayWithChangedIndexes } = changedIndexesHelper(state.words)
         state.words = arrayWithChangedIndexes
@@ -91,7 +94,7 @@ export const dictionaryActions: DictionaryActionsType = {
             state.selectAllMode = false
         }
     },
-    removeSelectedItems: (state,action) => {
+    removeSelectedItems: (state, action) => {
         const selectedItems = state.words
             .filter(el => el.checked === true)
             .map(el => el.index)

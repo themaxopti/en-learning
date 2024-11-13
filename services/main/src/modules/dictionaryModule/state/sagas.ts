@@ -1,10 +1,11 @@
 import { delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
-import { addManyWords, addWord, changeIndex, DictionaryType, removeSelectedItems, removeWord, setCurrentDictionary, setDictionaries, setDictionariesLoading, setIsDictionaryExist, setNewWordsAmount, setNewWordsPending, setWords, setWordsLoading } from "./dictionary.reducer";
-import { CreateWordRes, CreateWordsRes, DeleteWordRes, DeleteWordsRes, GetDictionariesRes, GetDictionaryRes, GetWordsRes } from "../api/dictionary-api.dto";
+import { addManyWords, addWord, changeIndex, createDictionary, DictionaryType, removeSelectedItems, removeWord, setCurrentDictionary, setDictionaries, setDictionariesLoading, setIsDictionaryExist, setNewWordsAmount, setNewWordsPending, setWords, setWordsLoading } from "./dictionary.reducer";
+import { CreateDictionaryRes, CreateWordRes, CreateWordsRes, DeleteWordRes, DeleteWordsRes, GetDictionariesRes, GetDictionaryRes, GetWordsRes } from "../api/dictionary-api.dto";
 import { dictionaryApi } from "../api/dictionary-api";
 import { changedIndexesHelper, sortWordsByIndex } from "../utils/helpers";
 import { currentDictionarySelector, wordsSelector } from "./selectors";
 import { v4 as uuidv4 } from 'uuid';
+import { setAlertError } from "@packages/shared/src/modules/errorModule";
 
 export const GET_DICTIONARIES = "GET_DICTIONARIES"
 export const CREATE_DICTIONARY = "CREATE_DICTIONARY"
@@ -21,6 +22,13 @@ interface GetDictionariesSagaParam {
     payload: {
         limit: number
         page: number
+    }
+}
+
+interface CreateDictionarySagaParam {
+    type: typeof CREATE_DICTIONARY
+    payload: {
+        title: string
     }
 }
 
@@ -81,8 +89,6 @@ export interface ChangeWordsIndexesSagaParam {
 
 export function* getDictionariesSaga({ payload: { limit, page } }: GetDictionariesSagaParam) {
     try {
-        console.log('get dictionar');
-        
         yield put(setDictionariesLoading(true));
         const response: GetDictionariesRes = yield dictionaryApi.getDictionaries({ limit, page })
 
@@ -96,17 +102,18 @@ export function* getDictionariesSaga({ payload: { limit, page } }: GetDictionari
     }
 }
 
-export function* createDictionarySaga({ payload: { limit, page } }: GetDictionariesSagaParam) {
+export function* createDictionarySaga({ payload: { title } }: CreateDictionarySagaParam) {
     try {
-        yield put(setDictionariesLoading(true));
-        const response: GetDictionariesRes = yield dictionaryApi.getDictionaries({ limit, page })
+        const response: CreateDictionaryRes = yield dictionaryApi.createDictionary({ title })
 
         if (response.statusCode !== 200) {
+            if (response.statusCode === 302) {
+                yield put(setAlertError(response.message))
+            }
             return
         }
 
-        yield put(setDictionaries(response.data));
-        yield put(setDictionariesLoading(false));
+        yield put(createDictionary(response.data));
     } catch (error) {
     }
 }
@@ -279,7 +286,7 @@ export function* watchChangeWordsIndexesSaga() {
     yield takeLatest(CHANGE_WORDS_INDEX, changeWordsIndexesSaga);
 }
 
-export const dictionarySagas: any[] = []
+// export const dictionarySagas: any[] = []
 export const dictionarySagasWathcers: any[] = [
     watchChangeWordsIndexesSaga,
     watchDeleteWordsSaga,
@@ -287,33 +294,24 @@ export const dictionarySagasWathcers: any[] = [
     watchGetWordsSaga,
     watchCreateWordSaga,
     watchCreateWordsSaga,
-    watchGetDictionariesSaga
-    // takeEvery( watchChangeWordsIndexesSaga),
-    // takeEvery(watchDeleteWordsSaga),
-    // takeEvery(watchDeleteWordSaga),
-    // takeEvery(watchGetWordsSaga),
-    // takeEvery(watchCreateWordSaga),
-    // takeEvery(watchCreateWordsSaga),
+    watchGetDictionariesSaga,
+    watchCreateDictionarySaga
 ]
-export const dictionarySagasWathcersRun: any = function (){
+export const dictionarySagasWathcersRun: any = function () {
     return dictionarySagasWathcers.map(el => el())
-    // for (let i = 0; i < params.length; i++) {
-    //     const saga = params[i];
-    //     saga()
-    // }
 }
 
 
 
-dictionarySagas.push(
-    getDictionariesSaga,
-    createDictionarySaga,
-    getWordsSaga,
-    createWordSaga,
-    createWordsSaga,
-    deleteWordSaga,
-    deleteWordsSaga,
-    changeWordsIndexesSaga,
-    watchGetDictionariesSaga,
-    watchCreateDictionarySaga
-)
+// dictionarySagas.push(
+//     getDictionariesSaga,
+//     createDictionarySaga,
+//     getWordsSaga,
+//     createWordSaga,
+//     createWordsSaga,
+//     deleteWordSaga,
+//     deleteWordsSaga,
+//     changeWordsIndexesSaga,
+//     watchGetDictionariesSaga,
+//     watchCreateDictionarySaga
+// )

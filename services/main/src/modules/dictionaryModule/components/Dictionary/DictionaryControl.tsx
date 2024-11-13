@@ -2,8 +2,6 @@ import { Box } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
-  // DELETE_WORDS,
-  // DeleteWordsSagaParam,
   removeSelectedItems,
   setSelectAllMode,
   setSelectMode,
@@ -15,36 +13,32 @@ import {
   selectMode,
   wordsSelector,
 } from '../../state/selectors'
-// import { setDictionaryControllRef } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
-import { useRefs } from '@packages/shared/src/components/wrapper/Wrapper/WrapperContainer'
-import { isDictionaryControllFixedSelector } from '@packages/shared/src/state/reducers/componentsProperties/selectors'
+import { RefContextType, useRefs } from '@packages/shared/src/components/wrapper/Wrapper/WrapperContainer'
 import { DELETE_WORDS } from '../../state/sagas'
+import s from '../../styles/DictionaryPage.module.scss'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { DescriptionModal } from '../Modals/DescriptionModal'
+import { dictionaryControllWidthSelector } from '@packages/shared/src/state/reducers/componentsProperties/selectors'
+import { setDictionaryControllWidth } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 
 interface Props {}
 
 export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
   const dispatch = useDispatch()
+
+  const [openDescModal, setOpenDescModal] = useState(false)
   const selectedMode = useSelector(selectMode)
   const selectedAllMode = useSelector(isSelectedAllMode)
   const words = useSelector(wordsSelector)
   const currentDictionary = useSelector(currentDictionarySelector)
+  const dictionaryControllWidth = useSelector(dictionaryControllWidthSelector)
 
-  const ref = useRef(null)
-  const { element2Ref, element1Ref } = useRefs()
+  const { headerRef, dictionaryControllRef }: RefContextType = useRefs()
+
   const [isDictionaryControllFixed, setIsDictionaryControllFixed] =
     useState(false)
+
   console.log('render')
-
-  //   const isDictionaryControllFixed = useSelector(
-  //     isDictionaryControllFixedSelector
-  //   )
-
-  //   useEffect(() => {
-  //     if (ref.current) {
-  //       // debugger
-  //       dispatch(setDictionaryControllRef(ref.current))
-  //     }
-  //   }, [ref.current])
 
   async function deleteManyWordsHandler() {
     const selectedWords = words
@@ -57,8 +51,6 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
         }
       })
 
-    // console.log(selectedWords)
-
     dispatch({
       type: DELETE_WORDS,
       payload: { dictionaryId: currentDictionary.id, wordsId: selectedWords },
@@ -66,9 +58,9 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
   }
 
   const handleScroll = () => {
-    if (element1Ref.current && element2Ref.current) {
-      const targetRect = element2Ref.current.getBoundingClientRect()
-      const rootRect = element1Ref.current.getBoundingClientRect()
+    if (headerRef.current && dictionaryControllRef.current) {
+      const targetRect = dictionaryControllRef.current.getBoundingClientRect()
+      const rootRect = headerRef.current.getBoundingClientRect()
 
       // Проверка на пересечение
       const isOverlap = targetRect.top < rootRect.height
@@ -89,27 +81,48 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
     window.addEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    const handleResize = (entries:any) => {
+      for (let entry of entries) {
+        dispatch(setDictionaryControllWidth(`${entry.contentRect.width}px`)) // Устанавливаем новую ширину
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    
+    if(dictionaryControllRef.current){
+      resizeObserver.observe(dictionaryControllRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect(); // Отключаем наблюдение при размонтировании
+    };
+  }, [dictionaryControllRef.current])
+
+  // const controllRef = useRef(null)
+
   return (
     <>
-      <div ref={element2Ref}>
+      <div ref={dictionaryControllRef} style={{ marginTop: '20px' }}>
         <div
           style={{
-            height: '25px',
+            height: '22.4px',
             maxWidth: '1400px',
             width: '100%',
             background: '#F5F6FA',
             display: isDictionaryControllFixed ? 'block' : 'none',
           }}
+          // ref={controllRef}
         >
           1
         </div>
         <Box
+          className={s.dictionary__control}
           sx={{
-            display: 'flex',
             position: isDictionaryControllFixed ? 'fixed' : 'static',
             top: isDictionaryControllFixed ? '60px' : '0',
-            backgroundColor: '#F5F6FA',
-            zIndex: '1000',
+            maxWidth: dictionaryControllWidth,
+            width: '100%',
           }}
         >
           <Box onClick={() => dispatch(setSelectMode(!selectedMode))}>
@@ -124,8 +137,19 @@ export const DictionaryControl: React.FC<Props> = React.memo(({}) => {
             </Box>
           )}
           <Box onClick={deleteManyWordsHandler}>Delete</Box>
+          <Box sx={{ display: 'flex', columnGap: '5px', marginLeft: 'auto' }}>
+            <Box>
+              <SettingsIcon
+                onClick={() => setOpenDescModal(prev => !prev)}
+                sx={{ cursor: 'pointer', width: 18, height: 18 }}
+              />
+            </Box>
+            <Box>2</Box>
+            <Box>3</Box>
+          </Box>
         </Box>
       </div>
+      <DescriptionModal open={openDescModal} setOpen={setOpenDescModal} />
     </>
   )
 })

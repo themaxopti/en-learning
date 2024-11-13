@@ -28,11 +28,18 @@ export const DictionaryPage: React.FC<Props> = ({}) => {
             {isWordsLoading ? (
               <Skeleton variant="text" width={210} height={30} />
             ) : (
-              <h2>Dictionary title</h2>
+              <Box sx={{ maxWidth: '200px', width: '100%' }}>
+                <h2>Dictionary title</h2>
+              </Box>
             )}
             <AddWordForm />
           </Box>
-          <Dictionary newWordsAmount={newWordsAmount} newWordsPending={newWordsPending} isWordsLoading={isWordsLoading} />
+          <Dictionary
+            newWordsAmount={newWordsAmount}
+            newWordsPending={newWordsPending}
+            isWordsLoading={isWordsLoading}
+          />
+          dasdas
         </Box>
       </WrapperContainer>
     </>

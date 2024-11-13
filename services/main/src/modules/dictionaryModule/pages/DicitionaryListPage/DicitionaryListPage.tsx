@@ -6,11 +6,14 @@ import { Formik, useFormik } from 'formik'
 import { Dictionary } from '../../components/Dictionary/Dictionary'
 import { useAuth } from '@/modules/authModule/hooks/authHook'
 import { useDictionaryListPage } from '../../hooks/useDictionaryListPage'
+import { useDispatch } from 'react-redux'
+import { CREATE_DICTIONARY } from '../../state/sagas'
 
 interface Props {}
 
 export const DicitionaryListPage: React.FC<Props> = ({}) => {
   const { cards, isDictionariesLoading } = useDictionaryListPage()
+  const dispatch = useDispatch()
   //   const loading = true
   //   const cards = []
 
@@ -22,6 +25,7 @@ export const DicitionaryListPage: React.FC<Props> = ({}) => {
       title: '',
     },
     onSubmit: values => {
+      dispatch({ type: CREATE_DICTIONARY, payload: { title: values.title } })
       values.title = ''
       setModal(false)
     },
@@ -59,7 +63,6 @@ export const DicitionaryListPage: React.FC<Props> = ({}) => {
         </Box>
         <DictionaryCards cards={cards} loading={isDictionariesLoading} />
       </Box>
-
 
       <Modal
         sx={{

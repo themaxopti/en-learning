@@ -1,5 +1,5 @@
 import { Box, Checkbox, Skeleton } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import s from '../../styles/DictionaryPage.module.scss'
 import Draggable, { DraggableCore } from 'react-draggable'
 import { Reorder, useDragControls } from 'framer-motion'
@@ -27,6 +27,7 @@ import {
 import { useDispatch } from 'react-redux'
 import { handleUuidWord } from '../../utils/helpers'
 import { CHANGE_WORDS_INDEX, DELETE_WORD } from '../../state/sagas'
+import { setDictionaryControllWidth } from '@packages/shared/src/state/reducers/componentsProperties/componentsProperties.reducer'
 
 interface Props {
   item: WordType
@@ -50,19 +51,15 @@ export const Word = ({ item, i }: Props) => {
 
   const currentDictionary = useSelector(currentDictionarySelector)
 
-  // useEffect(() => {
-  //     setIsControlItem((prev) => !prev)
-  // }, [isDraggable])
-
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement>,
     str: 'word' | 'translate'
   ) {
-    if (e.target.value === '') return
-    if (newWord.length === 1) {
-      setNewWord(newWord + e.target.value)
-      return
-    }
+    // if (e.target.value === '') return
+    // if (newWord.length === 1) {
+    //   setNewWord(newWord + e.target.value)
+    //   return
+    // }
     if (str === 'word') {
       setNewWord(e.target.value)
     }
@@ -87,7 +84,6 @@ export const Word = ({ item, i }: Props) => {
       value={item}
       style={{ y, listStyle: 'none', padding: '0px' }}
       dragControls={dragControls}
-      // onDragEnd={(event, info) => dispatch(changeIndex(item))}
       onDragEnd={(event, info) => dispatch({ type: CHANGE_WORDS_INDEX })}
       draggable={isDraggable}
     >
@@ -98,6 +94,10 @@ export const Word = ({ item, i }: Props) => {
         >
           {selectedMode && (
             <Checkbox
+              sx={{
+                padding: 0,
+                transform: 'translateX(-3px)',
+              }}
               onClick={() => dispatch(selectItem(item))}
               checked={item.checked}
             />
@@ -107,6 +107,7 @@ export const Word = ({ item, i }: Props) => {
             sx={{
               position: 'relative',
               fontWeight: isControlItem && 'bold',
+              ml: selectedMode ? '5px' : '0px',
             }}
           >
             {newWord}
@@ -226,10 +227,23 @@ export const Dictionary: React.FC<{
   newWordsAmount: number
   newWordsPending: boolean
 }> = ({ isWordsLoading, newWordsAmount, newWordsPending }) => {
+  const dictionaryWrapperRef = useRef(null)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (dictionaryWrapperRef.current) {
+      dispatch(
+        setDictionaryControllWidth(
+          dictionaryWrapperRef.current.getBoundingClientRect().width + 'px'
+        )
+      )
+    }
+  }, [dictionaryWrapperRef.current])
+
   return (
     <>
       <DictionaryControl />
-      <Box className={s['words']}>
+      <Box ref={dictionaryWrapperRef} className={s['words']}>
         <Words
           newWordsAmount={newWordsAmount}
           newWordsPending={newWordsPending}

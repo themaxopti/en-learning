@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { authApi } from '../api/auth-api'
 import { LOGOUT_ACITON } from '../state/auth.reducer'
+import { useEffect } from 'react'
 
 interface Props {
   anchorEl: null | HTMLElement
@@ -42,17 +43,38 @@ export const ProfileMenu: React.FC<Props> = ({
     handleClose()
   }
 
+  useEffect(() => {
+    if(anchorEl){
+      console.log(anchorEl?.getBoundingClientRect().top,'======================')
+
+    }
+  }, [anchorEl])
+
   return (
     <>
       <Menu
+        disableScrollLock={true}
         sx={{
-          position: 'absolute',
+          position: 'fixed',
           [breakpoints.down(1200)]: {
-            transform: 'translateX(10px)',
+            // transform: 'translateX(10px)',
+            transform: 'translateX(33px)',
           },
           [breakpoints.up(1200)]: {
-            transform: 'translateX(-10px)',
+            // transform: 'translateX(-10px)',
+            transform: 'translateX(33px)',
           },
+        }}
+        // @ts-ignore
+        // anchorPosition={{top:anchorEl?.getBoundingClientRect().top}}
+        // disablePortal={true}
+        // anchorOrigin={{
+        //   vertical: "center", 
+        //   horizontal: "center", 
+        // }}
+        transformOrigin={{
+          vertical: "top",    
+          horizontal: "right", 
         }}
         anchorEl={anchorEl}
         id="account-menu"
@@ -60,9 +82,15 @@ export const ProfileMenu: React.FC<Props> = ({
         onClose={handleClose}
         onClick={handleClose}
         slotProps={{
+          // root:{
+          //   sx:{
+          //     background:'blue'
+          //   }
+          // },
           paper: {
             elevation: 0,
             sx: {
+              // background:'red',
               position: 'absolute',
               top: 0,
               overflow: 'visible',

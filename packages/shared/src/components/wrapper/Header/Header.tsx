@@ -16,7 +16,7 @@ export const Header = React.memo(() => {
   const { breakpoints } = useTheme()
   const navigate = useNavigate()
 
-  const { element1Ref } = useRefs()
+  const { headerRef } = useRefs()
 
   const [isOverlapping, setIsOverlapping] = useState(false)
 
@@ -29,7 +29,7 @@ export const Header = React.memo(() => {
   return (
     <>
       <Box
-        ref={element1Ref}
+        ref={headerRef}
         className={s.header}
         sx={{
           display: 'flex',

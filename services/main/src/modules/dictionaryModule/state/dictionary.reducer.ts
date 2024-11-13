@@ -142,7 +142,8 @@ export const {
   setIsDictionaryExist,
   setNewWordsAmount,
   setNewWordsPending,
-  setCurrentDictionary
+  setCurrentDictionary,
+  createDictionary
 } = dictionarySlice.actions
 
 

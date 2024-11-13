@@ -1,0 +1,106 @@
+.quiz-control {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    row-gap: 20px;
+  }
+  .quiz-control__field {
+    // max-width: 200px;
+    width: 100%;
+  }
+  .quiz-control__field:first-child {
+    // margin-top: 2px;
+    transform: translateY(1.6px);
+  }
+
+  &__settings {
+    margin-left: auto;
+    .quiz-control__field {
+      min-width: 200px;
+    }
+  }
+
+  &__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(145, 137, 137);
+    max-width: 150px;
+    height: 50px;
+  }
+
+  &__slider {
+    display: flex;
+    max-width: 500px;
+    width: 100%;
+    height: 400px;
+    margin-bottom: auto;
+    margin-top: auto;
+    @media (max-width: 450px) {
+      height: 300px;
+    }
+    &__container {
+      transition: 0.2s;
+      transform: translateY(-25px);
+      font-size: 20px;
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      text-align: center;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 200px;
+      border: 3px solid #ced0db;
+      border-radius: 10px;
+      @media (max-width: 450px) {
+        row-gap: 30px;
+      }
+      .quiz-control__word {
+        display: flex;
+        flex-direction: column;
+        // justify-content: center;
+        align-items: center;
+        row-gap: 10px;
+      }
+      .quiz-control__variants {
+        font-size: 16px;
+        display: flex;
+        column-gap: 10px;
+        flex-wrap: wrap;
+        row-gap: 10px;
+        justify-content: center;
+        @media (max-width: 450px) {
+          font-size: 14px;
+        }
+        div {
+          transition: 0.1s;
+          cursor: pointer;
+          border-radius: 10px;
+          padding: 5px;
+          border: 2px solid #ced0db;
+          font-weight: bold;
+        }
+        div:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
+.quiz__sliced__text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.quiz-field-input {
+  display: flex;
+  column-gap: 10px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}

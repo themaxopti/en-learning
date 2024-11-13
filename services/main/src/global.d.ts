@@ -15,6 +15,10 @@ declare module "*.svg" {
     const SVG: React.VFC<React.SVGProps<SVGSVGElement>>;
     export default SVG;
 }
+declare module "*.mp4" {
+    const src: string;
+    export default src;
+  }
 
 declare const __PLATFORM__: 'mobile' | 'desktop';
 declare const __ENV__: 'production' | 'development';

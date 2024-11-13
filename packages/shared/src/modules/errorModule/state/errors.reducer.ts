@@ -5,7 +5,7 @@ interface ErrorState {
 }
 
 const initialState: ErrorState = {
-    alertError: 'sss'
+    alertError: ''
 }
 
 const errorSlice = createSlice({

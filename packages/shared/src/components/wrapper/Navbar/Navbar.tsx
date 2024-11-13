@@ -13,14 +13,30 @@ import { useSelector } from 'react-redux'
 import { navbarWidthSelectort } from '../../../state/reducers/componentsProperties/selectors'
 import { setNavbarWidth } from '../../../state/reducers/componentsProperties/componentsProperties.reducer'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useRoutes } from 'react-router-dom'
+
+export interface NavbarItem {
+  title: string
+  path: string
+}
 
 export const Navbar = () => {
   const [active, setActive] = useState(0)
-  const [items] = useState(['Dictionary', 'Tests', 'Some', '1'])
+  const [items] = useState<NavbarItem[]>([
+    {
+      title: 'Dictionaries',
+      path: '/',
+    },
+    {
+      title: 'Quizzes',
+      path:'/quizzes'
+    },
+  ])
   const [close, setClose] = useState(false)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const navbarWidth = useSelector(navbarWidthSelectort)
 
@@ -59,8 +75,9 @@ export const Navbar = () => {
               <Item
                 setActive={setActive}
                 key={i}
-                title={el}
-                active={active}
+                title={el.title}
+                path={el.path}
+                active={location.pathname === el.path }
                 i={i}
                 photo={book}
               />
@@ -70,11 +87,12 @@ export const Navbar = () => {
         <Box className={s.navbar__menu}>
           <Box>
             <Item
+              path={''}
               setActive={() => {
                 setClose(!close)
               }}
               title={'Close'}
-              active={active}
+              active={false}
               i={2000}
               photo={arrow}
             />

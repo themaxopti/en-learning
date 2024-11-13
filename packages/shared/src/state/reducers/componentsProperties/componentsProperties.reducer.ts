@@ -7,6 +7,7 @@ interface ComponentsPropertiesState {
   }
   dictionaryControll: {
     fixed: boolean
+    width: string
   }
 }
 
@@ -18,7 +19,8 @@ const initialState: ComponentsPropertiesState = {
     height: "60px"
   },
   dictionaryControll: {
-    fixed: false
+    fixed: false,
+    width: ''
   }
 };
 
@@ -32,7 +34,10 @@ export const componentsPropertiesSlice = createSlice({
     setDictionaryControllFixed(state, action: PayloadAction<boolean>) {
       state.dictionaryControll.fixed = action.payload
     },
+    setDictionaryControllWidth(state, action: PayloadAction<string>) {
+      state.dictionaryControll.width = action.payload
+    },
   },
 });
 
-export const { setNavbarWidth, setDictionaryControllFixed } = componentsPropertiesSlice.actions;
+export const { setNavbarWidth, setDictionaryControllFixed, setDictionaryControllWidth } = componentsPropertiesSlice.actions;

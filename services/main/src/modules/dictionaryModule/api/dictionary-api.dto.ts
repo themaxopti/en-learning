@@ -5,7 +5,6 @@ interface ServerResponse<T> {
 }
 
 export interface CreateDictionaryReq {
-    userId: number
     title: string
 }
 

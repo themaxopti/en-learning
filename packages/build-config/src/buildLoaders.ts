@@ -12,6 +12,14 @@ export function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
     type: "asset/resource",
   };
 
+  const mp4Loader = {
+    test: /\.(mp4|webm|ogg)$/,  // Регулярное выражение для видеофайлов
+    type: 'asset/resource',     // Используем встроенный loader в Webpack 5
+    generator: {
+      filename: 'videos/[name][ext]', // Куда копировать видеофайлы
+    },
+  }
+
   const svgrLoader = {
     test: /\.svg$/i,
     use: [
@@ -81,6 +89,7 @@ export function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
     scssLoader,
     tsLoader,
     // babelLoader,
+    mp4Loader,
     svgrLoader,
   ];
 }

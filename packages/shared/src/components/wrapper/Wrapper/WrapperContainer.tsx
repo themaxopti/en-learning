@@ -22,6 +22,12 @@ interface Props {
   fullHeight?: boolean
 }
 
+export interface RefContextType {
+  headerRef: React.MutableRefObject<HTMLDivElement>
+  dictionaryControllRef: React.MutableRefObject<HTMLDivElement>
+  isDictionaryControllFixed: boolean
+}
+
 const RefContext = createContext(null)
 
 export const useRefs = () => {
@@ -41,16 +47,15 @@ export const WrapperContainer: React.FC<Props> = ({
 
   useEffect(() => {
     // window.addEventListener('scroll', handleScroll)
-    // handleScroll() 
+    // handleScroll()
     return () => {
-    //   window.removeEventListener('scroll', handleScroll)
+      //   window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
-
   return (
     <RefContext.Provider
-      value={{ element1Ref: headerRef, element2Ref: dictionaryControllRef, isDictionaryControllFixed }}
+      value={{ headerRef, dictionaryControllRef, isDictionaryControllFixed }}
     >
       <Wrapper fullHeight={fullHeight}>{children}</Wrapper>
     </RefContext.Provider>

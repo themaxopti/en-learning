@@ -3,14 +3,7 @@ import { useFormik } from 'formik'
 import React, { useEffect, useRef, useState } from 'react'
 import s from '../../styles/DictionaryPage.module.scss'
 import { useDispatch } from 'react-redux'
-import {
-  addManyWords,
-  addWord,
-  // CREATE_WORD,
-  // CREATE_WORDS,
-  // CreateWordSagaParam,
-  // CreateWordsSagaParam,
-} from '../../state/dictionary.reducer'
+import { addManyWords, addWord } from '../../state/dictionary.reducer'
 import { useSelector } from 'react-redux'
 import { currentDictionarySelector, wordsSelector } from '../../state/selectors'
 import { convertStrToArray } from '../../utils/helpers'
@@ -98,8 +91,8 @@ export const AddWordForm: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <Box>
-        <form onSubmit={formik.handleSubmit}>
+      <Box sx={{ width: '100%', display: 'flex' }}>
+        <form onSubmit={formik.handleSubmit} style={{width:'100%',display:'flex'}}>
           <Box className={s['add-word-form']}>
             <Button
               onClick={() => setOpen(true)}
@@ -119,7 +112,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
                 label="Word"
                 variant="outlined"
                 inputProps={{
-                  'data-testid': 'wordInput'
+                  'data-testid': 'wordInput',
                 }}
               />
               <TextField
@@ -132,7 +125,7 @@ export const AddWordForm: React.FC<Props> = ({}) => {
                 label="Translate"
                 variant="outlined"
                 inputProps={{
-                  'data-testid': 'translateInput'
+                  'data-testid': 'translateInput',
                 }}
               />
               <Button
@@ -141,9 +134,6 @@ export const AddWordForm: React.FC<Props> = ({}) => {
                 variant="contained"
                 size="small"
                 data-testid="addWordButton"
-                // inputProps={{
-                //   'data-testid': 'addWordButton'
-                // }
               >
                 Add
               </Button>

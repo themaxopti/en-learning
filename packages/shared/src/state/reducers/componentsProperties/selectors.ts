@@ -6,3 +6,4 @@ export const navbarWidthSelectort = (state: RootState) =>
 
 
 export const isDictionaryControllFixedSelector = (state: RootState) => state.componentsProperties.dictionaryControll.fixed
+export const dictionaryControllWidthSelector = (state: RootState) => state.componentsProperties.dictionaryControll.width

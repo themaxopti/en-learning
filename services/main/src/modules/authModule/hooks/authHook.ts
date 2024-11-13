@@ -17,10 +17,7 @@ export const useAuth = ({ redirect = false }: Options) => {
     // const [auth, setAuth] = useState(null)
 
     useEffect(() => {
-        console.log(authLoading,isAuth,'cypress');
-        
         if (authLoading === false) {
-            
             if (!isAuth) {
                 if (redirect) {
                     navigation('/login')

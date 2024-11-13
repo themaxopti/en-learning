@@ -41,7 +41,7 @@ export function* authSaga(): any {
     yield put(setAuthLoading(true));
     const response: AuthResponse = yield authApi.auth()
 
-    if (response.statusCode === 400 || response.statusCode === 404) {
+    if (response.statusCode === 400 || response.statusCode === 404 || response.statusCode === 401) {
       yield put(setIsAuth(false));
       yield put(setAuthLoading(false));
       return
