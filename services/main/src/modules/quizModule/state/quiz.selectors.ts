@@ -11,3 +11,4 @@ export const quizIsCorrectAnswerSelector = (state: RootState) =>
 export const quizFinishedSelector = (state: RootState) => state.quiz.finished
 export const quizModeSelector = (state: RootState) => state.quiz.mode
 export const randomModeSelector = (state: RootState) => state.quiz.randomMode
+export const quizListSelector = (state: RootState) => state.quiz.quizList

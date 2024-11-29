@@ -1,11 +1,19 @@
 import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit'
 import { words } from '..'
-import { v4 as uuidv4 } from 'uuid';
-import { delay, put, takeLatest } from 'redux-saga/effects';
-import { dictionaryApi } from '../api/dictionary-api';
-import { CreateWordRes, CreateWordsRes, DeleteWordRes, DeleteWordsRes, GetDictionariesRes, GetDictionaryRes, GetWordsRes } from '../api/dictionary-api.dto';
-import { dictionaryActions } from './actions';
-import { DELETE_WORD, DELETE_WORDS, GET_DICTIONARIES, GET_WORDS } from './sagas';
+import { v4 as uuidv4 } from 'uuid'
+import { delay, put, takeLatest } from 'redux-saga/effects'
+import { dictionaryApi } from '../api/dictionary-api'
+import {
+  CreateWordRes,
+  CreateWordsRes,
+  DeleteWordRes,
+  DeleteWordsRes,
+  GetDictionariesRes,
+  GetDictionaryRes,
+  GetWordsRes,
+} from '../api/dictionary-api.dto'
+import { dictionaryActions } from './actions'
+import { DELETE_WORD, DELETE_WORDS, GET_DICTIONARIES, GET_WORDS } from './sagas'
 // import { delay } from '@packages/shared';
 
 export interface DictionaryType {
@@ -22,6 +30,7 @@ export interface WordType {
   globalIndex?: number
   userId?: number
   checked: boolean
+  hidden?: boolean
 }
 
 interface GetDictionariesSagaParam {
@@ -96,14 +105,12 @@ export interface DictionaryState {
 }
 
 const initialState: DictionaryState = {
-  words:
-    [
-      // { index: 0, title: `hellored1 ${uuidv4()}`, translate: 'Привет', checked: false, id: 1 },
-      // { index: 1, title: `helloredux2 ${uuidv4()}`, translate: 'Привет3', checked: false, id: 2 },
-      // { index: 2, title: `helloredux3 ${uuidv4()}`, translate: 'Привет3', checked: false, id: 3 },
-      // { index: 3, title: `helloredux3 ${uuidv4()}`, translate: 'Привет4', checked: false, id: 4 },
-    ]
-  ,
+  words: [
+    // { index: 0, title: `hellored1 ${uuidv4()}`, translate: 'Привет', checked: false, id: 1 },
+    // { index: 1, title: `helloredux2 ${uuidv4()}`, translate: 'Привет3', checked: false, id: 2 },
+    // { index: 2, title: `helloredux3 ${uuidv4()}`, translate: 'Привет3', checked: false, id: 3 },
+    // { index: 3, title: `helloredux3 ${uuidv4()}`, translate: 'Привет4', checked: false, id: 4 },
+  ],
   dictionaries: null,
   currentDictionary: null,
   selectMode: false,
@@ -113,15 +120,15 @@ const initialState: DictionaryState = {
   isDictionaryExist: true,
   newWords: {
     pending: false,
-    amount: 0
-  }
+    amount: 0,
+  },
 }
 
 const dictionarySlice = createSlice({
   name: 'dictionary',
   initialState,
   reducers: {
-   ...dictionaryActions
+    ...dictionaryActions,
   },
 })
 
@@ -143,9 +150,8 @@ export const {
   setNewWordsAmount,
   setNewWordsPending,
   setCurrentDictionary,
-  createDictionary
+  createDictionary,
+  hideSelectedItems
 } = dictionarySlice.actions
-
-
 
 export const dictionaryReducer = dictionarySlice.reducer

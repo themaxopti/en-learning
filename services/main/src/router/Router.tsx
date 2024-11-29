@@ -8,6 +8,7 @@ import { LoginPage } from '@/modules/authModule'
 import { DictionaryListPageContainer } from '@/modules/dictionaryModule/pages/DicitionaryListPage/DictionaryListPageContainer'
 import { QuizzesPage } from '@/modules/quizModule/pages/QuizzesPage'
 import { QuizPage } from '@/modules/quizModule/pages/QuizPage'
+import { LocalQuizPage } from '@/modules/quizModule/pages/LocalQuizPage'
 
 const routes = [
   {
@@ -29,6 +30,10 @@ const routes = [
   {
     path: '/quiz/:id',
     element: <QuizPage />,
+  },
+  {
+    path: '/local-quiz',
+    element: <LocalQuizPage />,
   },
 ]
 

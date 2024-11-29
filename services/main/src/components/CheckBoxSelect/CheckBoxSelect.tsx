@@ -18,6 +18,7 @@ interface Props {
   variant?: string
   size?: string
   className?: string
+  handleChange: any
 }
 
 export const CheckBoxSelect: React.FC<Props> = ({
@@ -28,13 +29,24 @@ export const CheckBoxSelect: React.FC<Props> = ({
   variant = 'standart',
   size = 'small',
   className = '',
+  handleChange,
 }) => {
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event
-    setSelectedOptions(typeof value === 'string' ? value.split(',') : value)
-  }
+  // const handleChange = (event: any) => {
+  //   const {
+  //     target: { value },
+  //   } = event
+  //   console.log(value)
+
+  //   if (value.length === 0) {
+  //     return
+  //   }
+
+  //   if (selectedOptions.length === 1) {
+  //     const isSelectedItem = selectedOptions.find(el => el === value[0])
+  //     console.log(isSelectedItem, 'sss')
+  //   }
+  //   setSelectedOptions(typeof value === 'string' ? value.split(',') : value)
+  // }
 
   return (
     <>
@@ -49,7 +61,8 @@ export const CheckBoxSelect: React.FC<Props> = ({
           MenuProps={{
             sx: {
               '@media(max-width:600px)': {
-                transform: 'translateX(-6px)',
+                // transform: 'translateX(-6px)',
+                transform: 'translateX(0)',
               },
             },
           }}

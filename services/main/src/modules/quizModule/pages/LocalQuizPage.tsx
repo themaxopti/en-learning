@@ -13,14 +13,18 @@ import React, { useRef, useState } from 'react'
 import s from '../quiz.module.scss'
 import { CheckBoxSelect } from '@/components/CheckBoxSelect/CheckBoxSelect'
 import { WordsQuiz, WordsQuizContainer } from '../components/WordsQuiz'
+import { useDispatch } from 'react-redux'
+import { changeMode } from '../state/quiz.reducer'
 interface Props {}
 
-export const QuizPage: React.FC<Props> = ({}) => {
+export const LocalQuizPage: React.FC<Props> = ({}) => {
   const [dictionaryOptions, setDictionaryOptions] = useState(['some', 'any'])
   const [options, setOptions] = useState(['write', 'choose'])
 
   const [selectedDictionaryOptions, setSelectedDictionaryOptions] = useState([])
   const [selectedOptions, setSelectedOptions] = useState(['choose'])
+
+  const dispatch = useDispatch()
 
   const handleChange = (event: any) => {
     const {
@@ -32,12 +36,14 @@ export const QuizPage: React.FC<Props> = ({}) => {
       return
     }
 
-    if (selectedOptions.length === 1) {
-      const isSelectedItem = selectedOptions.find(el => el === value[0])
-      console.log(isSelectedItem, 'sss')
-    }
+    // if (selectedOptions.length === 1) {
+    //   const isSelectedItem = selectedOptions.find(el => el === value[0])
+    //   console.log(isSelectedItem, 'sss')
+    // }
+    dispatch(changeMode(value))
     setSelectedOptions(typeof value === 'string' ? value.split(',') : value)
   }
+
 
   return (
     <>

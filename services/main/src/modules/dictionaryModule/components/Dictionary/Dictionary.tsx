@@ -8,6 +8,7 @@ import { DictionaryControl } from './DictionaryControl'
 import { useSelector } from 'react-redux'
 import {
   currentDictionarySelector,
+  selectedWordsSelector,
   selectMode,
   uuidWordsSelector,
   wordsSelector,
@@ -36,30 +37,24 @@ interface Props {
 }
 
 export const Word = ({ item, i }: Props) => {
-  const y = useMotionValue(0)
-  const dragControls = useDragControls()
-  const selectedMode = useSelector(selectMode)
   const dispatch = useDispatch()
+  const dragControls = useDragControls()
+
+  const selectedMode = useSelector(selectMode)
+  const currentDictionary = useSelector(currentDictionarySelector)
+
+  const y = useMotionValue(0)
 
   const [isDraggable, setIsDraggable] = useState(true)
-
   const [isControlItem, setIsControlItem] = useState(false)
   const [isControlItemTranslate, setIsControlItemTranslate] = useState(false)
-
   const [newWord, setNewWord] = useState(handleUuidWord(item.title))
   const [newTranslate, setNewTranslate] = useState(item.translate)
-
-  const currentDictionary = useSelector(currentDictionarySelector)
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement>,
     str: 'word' | 'translate'
   ) {
-    // if (e.target.value === '') return
-    // if (newWord.length === 1) {
-    //   setNewWord(newWord + e.target.value)
-    //   return
-    // }
     if (str === 'word') {
       setNewWord(e.target.value)
     }
@@ -108,10 +103,17 @@ export const Word = ({ item, i }: Props) => {
               position: 'relative',
               fontWeight: isControlItem && 'bold',
               ml: selectedMode ? '5px' : '0px',
+              display:item.hidden ? 'none' : 'flex'
             }}
           >
             {newWord}
           </Box>
+          <Skeleton
+            sx={{ display: item.hidden ? 'block' : 'none' }}
+            variant="text"
+            width={100}
+            height={30}
+          />
           {isControlItem && (
             <Box
               onClick={e => {

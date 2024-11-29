@@ -6,13 +6,17 @@ import { QuizList } from '../components/QuizList'
 interface Props {}
 
 export const QuizzesPage: React.FC<Props> = ({}) => {
+
+  
+
   return (
     <>
       <WrapperContainer>
         <h1 style={{ marginBottom: '40px' }}>Your quizzes</h1>
         <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '50px' }}>
           <QizzesControll />
-          <QuizList quizzes={[]} />
+          {/* @ts-ignore */}
+          <QuizList quizList={[]} />
         </Box>
       </WrapperContainer>
     </>

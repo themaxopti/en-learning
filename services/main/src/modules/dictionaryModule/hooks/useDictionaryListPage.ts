@@ -21,7 +21,7 @@ export function useDictionaryListPage() {
             if(cards){
                 return
             }
-            await delay(2000)
+            await delay(500)
             dispatch({ type: GET_DICTIONARIES, payload: { limit: 1000, page: 1 } })
         }
     }

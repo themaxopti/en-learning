@@ -8,6 +8,7 @@ import { navbarWidthSelectort } from '../../../state/reducers/componentsProperti
 import { alertErrorSelector } from '../../../modules/errorModule/index'
 import Alert from '@mui/material/Alert'
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar'
+import { ErrorAlert } from '../../../modules/errorModule/components/ErrorAlert/ErrorAlert'
 
 interface Props {
   children: any
@@ -22,11 +23,10 @@ export const Wrapper: React.FC<Props> = ({ children, fullHeight = false }) => {
   return (
     <>
       {alertError && (
-        <Snackbar
+        <ErrorAlert
           open={alertError ? true : false}
           autoHideDuration={5000}
           // onClose={handleClose}
-          message="This Snackbar will be dismissed in 5 seconds."
         />
       )}
       {/* {alertError && <Alert severity="warning">{alertError}</Alert>} */}

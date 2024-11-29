@@ -27,10 +27,12 @@ import {
   countWordIndex,
   QuizModes,
   QuizWord,
+  resetCurrentQuiz,
 } from '../state/quiz.reducer'
 import { useDispatch } from 'react-redux'
 import { checInputkWordSaga_A_C, checkWordSaga_A_C } from '../state/quiz.sagas'
 import { throttle } from '@/helpers/throttle'
+import { useNavigate } from 'react-router-dom'
 
 interface WordsQuizProps {
   words: QuizWord[]
@@ -47,8 +49,6 @@ interface WordsQuizProps {
 // interface WordsQuizContainerProps {}
 
 export const WordsQuizContainer: React.FC = () => {
-  console.log('render')
-
   const quizWords = useSelector(quizWordsSelector)
   const currentWordIndex = useSelector(quizCurrentWordIndexSelector)
   const isErrorInWord = useSelector(quizIsErrorInWordSelector)
@@ -89,20 +89,29 @@ export const WordsQuizContainer: React.FC = () => {
     dispatch(changeRandomMode({}))
   }, [currentWordIndex])
 
+  useEffect(() => {
+    console.log(randomMode)
+  }, [randomMode])
+
   return (
     <>
-      <WordsQuiz
-        randomMode={randomMode}
-        handleInput={throttledHandler.current}
-        quizFinished={quizFinished}
-        quizIsCorrectAnswer={quizIsCorrectAnswer}
-        isErrorInWord={isErrorInWord}
-        currentWordIndex={currentWordIndex}
-        words={quizWords}
-        quizMode={quizMode}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-      />
+      {quizWords?.length === 0 && (
+        <Box>Add words in quiz in some dictionary</Box>
+      )}
+      {quizWords?.length > 0 && (
+        <WordsQuiz
+          randomMode={randomMode}
+          handleInput={throttledHandler.current}
+          quizFinished={quizFinished}
+          quizIsCorrectAnswer={quizIsCorrectAnswer}
+          isErrorInWord={isErrorInWord}
+          currentWordIndex={currentWordIndex}
+          words={quizWords}
+          quizMode={quizMode}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
+      )}
     </>
   )
 }
@@ -119,6 +128,11 @@ export const WordsQuiz: React.FC<WordsQuizProps> = ({
   setInputValue,
   randomMode,
 }) => {
+  console.log('render')
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   return (
     <>
       <Box className={s['quiz-control__slider']}>
@@ -130,8 +144,8 @@ export const WordsQuiz: React.FC<WordsQuizProps> = ({
           className={s['quiz-control__slider__container']}
         >
           <Box>Your quiz is finished</Box>
-          <Button>replay</Button>
-          <Button>Back to quizzes</Button>
+          <Button onClick={() => dispatch(resetCurrentQuiz({}))}>replay</Button>
+          <Button onClick={() => navigate('/quizzes')}>Back to quizzes</Button>
         </Box>
         <Box
           sx={{
