@@ -48,7 +48,7 @@ interface AuthRespnonse {
 class AuthApi {
     public axiosApi: AxiosInstance
     constructor() {
-        this.axiosApi = axios.create({ baseURL: 'http://localhost:3000', withCredentials: true })
+        this.axiosApi = axios.create({ baseURL: 'http://localhost:3000/api', withCredentials: true })
     }
 
     async login(data: LoginRequest): Promise<LoginRespnonse> {

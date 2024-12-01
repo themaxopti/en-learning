@@ -5,7 +5,7 @@ import { CreateWordsRes, DeleteWordReq, DeleteWordRes, DeleteWordsReq, DeleteWor
 class DictionaryApi {
     public axiosApi: AxiosInstance
     constructor() {
-        this.axiosApi = axios.create({ baseURL: 'http://localhost:3000/dictionary', withCredentials: true })
+        this.axiosApi = axios.create({ baseURL: 'http://localhost:3000/api/dictionary', withCredentials: true })
     }
 
     async createDictionary(data: CreateDictionaryReq): Promise<CreateDictionaryRes> {
